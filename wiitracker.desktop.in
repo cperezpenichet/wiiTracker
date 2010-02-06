@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Wiitracker
+Comment=Wiitracker application
+Categories=GNOME;Utility;
+Exec=wiitracker
+Icon=wiitracker
+Terminal=false
+Type=Application

@@ -43,7 +43,7 @@ class WiitrackerWindow(gtk.Window):
         """
         pass
 
-    def finish_initializing(self, builder, wiiAddress):
+    def finish_initializing(self, builder):
         """finish_initalizing should be called after parsing the ui definition
         and creating a WiitrackerWindow object with it in order to finish
         initializing the start of the new WiitrackerWindow instance.
@@ -52,13 +52,13 @@ class WiitrackerWindow(gtk.Window):
         #get a reference to the builder and set up the signals
         self.builder = builder
         self.builder.connect_signals(self)
-        self.tracker = Wii3DTracker(wiiAddress)
 
         #uncomment the following code to read in preferences at start up
-        #dlg = PreferencesWiitrackerDialog.NewPreferencesWiitrackerDialog()
-        #self.preferences = dlg.get_preferences()
+        dlg = PreferencesWiitrackerDialog.NewPreferencesWiitrackerDialog()
+        self.preferences = dlg.get_preferences()
 
         #code for other initialization actions should be added here
+        self.tracker = Wii3DTracker(self.preferences['wiiAddress'])
         self.statusBar = builder.get_object("statusbar")
         self.status_context = self.statusBar.get_context_id('')
         self.rollDrawing = builder.get_object('rollDrawing')
@@ -69,7 +69,6 @@ class WiitrackerWindow(gtk.Window):
         self.menuConnectTrack = builder.get_object('menuitem_ConnectTrack')
         self.menuRumble = builder.get_object('menuitem_Rumble')
         
-
         self.__connectTrack_source = 0
         
     def about(self, widget, data=None):
@@ -84,6 +83,12 @@ class WiitrackerWindow(gtk.Window):
         response = prefs.run()
         if response == gtk.RESPONSE_OK:
             #make any updates based on changed preferences here
+            self.preferences = prefs.get_preferences()
+            self.tracker.wiiAddress = self.preferences['wiiAddress']
+#            if self.preferences['wiiAddress'] < self.tracker.FILTER_LENGTH:
+#                self.tracker.roll_fltr_1.__init__()
+#                self.tracker.roll_fltr_2.__init__()
+            self.tracker.FILTER_LENGTH = self.preferences['filterSize']
             pass
         prefs.destroy()
 
@@ -199,7 +204,7 @@ class WiitrackerWindow(gtk.Window):
         
         return not self.tracker.stopping
 
-def NewWiitrackerWindow(wiiAddress):
+def NewWiitrackerWindow():
     """NewWiitrackerWindow - returns a fully instantiated
     WiitrackerWindow object. Use this function rather than
     creating a WiitrackerWindow directly.
@@ -213,7 +218,7 @@ def NewWiitrackerWindow(wiiAddress):
     builder = gtk.Builder()
     builder.add_from_file(ui_filename)
     window = builder.get_object("wiitracker_window")
-    window.finish_initializing(builder, wiiAddress)
+    window.finish_initializing(builder)
     return window
 
 if __name__ == "__main__":
@@ -229,7 +234,7 @@ if __name__ == "__main__":
         logging.debug('logging enabled')
 
     #run the application
-    window = NewWiitrackerWindow("00:17:AB:39:49:98")
+    window = NewWiitrackerWindow()
     window.show()
     threads_init()
     gtk.main()

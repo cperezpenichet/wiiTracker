@@ -113,6 +113,10 @@ class Wii3DTracker(object):
                 else:
                     nu_roll = roll + pi/self.FILTER_LENGTH
                 
+                while self.roll_fltr_1.qsize() > self.FILTER_LENGTH:
+                    self.roll_fltr_1.get()
+                    self.roll_fltr_2.get()
+                    self.pitch_fltr.get()
                 if self.roll_fltr_1.qsize() == self.FILTER_LENGTH:
                     self.filtered_roll_1 = self.filtered_roll_1 - self.roll_fltr_1.get()
                     self.filtered_roll_2 = self.filtered_roll_2 - self.roll_fltr_2.get()

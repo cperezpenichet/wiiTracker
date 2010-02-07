@@ -47,6 +47,11 @@ class PreferencesWiitrackerDialog(gtk.Dialog):
         self.__record_type = "http://wiki.ubuntu.com/Quickly/RecordTypes/Wiitracker/Preferences"
         self.__preferences = self.get_preferences()
         #TODO:code for other initialization actions should be added here
+        self.addressEntry = self.builder.get_object("AddressEntry")
+        self.addressEntry.set_text(self.__preferences['wiiAddress'])
+        self.dampingScale = self.builder.get_object("dampingScale")
+        self.dampingScale.set_range(1, 100)
+        self.dampingScale.set_value(self.__preferences['filterSize'])
 
     def get_preferences(self):
         """get_preferences  -returns a dictionary object that contain
@@ -63,10 +68,13 @@ class PreferencesWiitrackerDialog(gtk.Dialog):
     def __load_preferences(self):
         #TODO: add prefernces to the self.__preferences dict
         #default preferences that will be overwritten if some are saved
-        self.__preferences = {"record_type":self.__record_type}
+        self.__preferences = {"record_type":self.__record_type,
+                              "wiiAddress": "00:17:AB:39:49:98",
+                              "filterSize": 15}
         
         results = self.__database.get_records(record_type=self.__record_type, create_view=True)
        
+#        self.__key = self.__database.put_record(Record(self.__preferences))
         if len(results.rows) == 0:
             #no preferences have ever been saved
             #save them before returning
@@ -85,6 +93,8 @@ class PreferencesWiitrackerDialog(gtk.Dialog):
 
         #make any updates to self.__preferences here
         #self.__preferences["preference1"] = "value2"
+        self.__preferences["wiiAddress"] = self.addressEntry.get_text()
+        self.__preferences["filterSize"] = self.dampingScale.get_value()
         self.__save_preferences()
 
     def cancel(self, widget, data=None):

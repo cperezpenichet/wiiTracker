@@ -1,7 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
-# This file is in the public domain
+# Copyright (C) 2013 Carlos M. Pérez Penichet <cperezpenichet@gmail.com>
+#This program is free software: you can redistribute it and/or modify it 
+#under the terms of the GNU General Public License version 3, as published 
+#by the Free Software Foundation.
+#
+#This program is distributed in the hope that it will be useful, but 
+#WITHOUT ANY WARRANTY; without even the implied warranties of 
+#MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#PURPOSE.  See the GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License along 
+#with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
 import sys
@@ -85,9 +96,6 @@ class WiitrackerWindow(gtk.Window):
             #make any updates based on changed preferences here
             self.preferences = prefs.get_preferences()
             self.tracker.wiiAddress = self.preferences['wiiAddress']
-#            if self.preferences['wiiAddress'] < self.tracker.FILTER_LENGTH:
-#                self.tracker.roll_fltr_1.__init__()
-#                self.tracker.roll_fltr_2.__init__()
             self.tracker.FILTER_LENGTH = self.preferences['filterSize']
             pass
         prefs.destroy()
@@ -150,6 +158,7 @@ class WiitrackerWindow(gtk.Window):
         
     def on_menuitem_Rumble(self, widget, data=None):
         self.tracker.wiiMote.rumble = widget.active
+        self.tracker.wiiMote.led = 0b0101 if widget.active else 0
         
     def __paint(self):
         angles = self.tracker.getAngles()

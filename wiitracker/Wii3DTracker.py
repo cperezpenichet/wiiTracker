@@ -1,8 +1,21 @@
-'''
-Created on Jan 15, 2010
+# -*- coding: utf-8 -*-
+### BEGIN LICENSE
+# Copyright (C) 2013 Carlos M. Pérez Penichet <cperezpenichet@gmail.com>
+#This program is free software: you can redistribute it and/or modify it 
+#under the terms of the GNU General Public License version 3, as published 
+#by the Free Software Foundation.
+#
+#This program is distributed in the hope that it will be useful, but 
+#WITHOUT ANY WARRANTY; without even the implied warranties of 
+#MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#PURPOSE.  See the GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License along 
+#with this program.  If not, see <http://www.gnu.org/licenses/>.
+### END LICENSE
 
-@author: carlos
-'''
+###################### DO NOT TOUCH THIS (HEAD TO THE SECOND PART) ######################
+
 from Queue import Queue
 from math import atan, cos, pi
 import cwiid
@@ -41,6 +54,18 @@ class Wii3DTracker(object):
     def __del__(self):
         if self.connected:
             self.wiiMote.close()
+            
+    def getAccel(self):
+        messages = None
+        while messages == None:
+            messages = self.wiiMote.get_mesg()
+            
+        for msg in messages:
+            if msg[0] == cwiid.MESG_ACC:
+                # Normalize data using calibration info from the controller
+                for i in range(3):
+                    self.acc[i] = float(msg[1][i]-self.acc_cal[0][i])/(self.acc_cal[1][i]-self.acc_cal[0][i])
+        return self.acc
     
     def connect(self):
         """

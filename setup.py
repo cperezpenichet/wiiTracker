@@ -1,7 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 ### BEGIN LICENSE
-# This file is in the public domain
+# Copyright (C) 2013 Carlos M. Pérez Penichet <cperezpenichet@gmail.com>
+#This program is free software: you can redistribute it and/or modify it 
+#under the terms of the GNU General Public License version 3, as published 
+#by the Free Software Foundation.
+#
+#This program is distributed in the hope that it will be useful, but 
+#WITHOUT ANY WARRANTY; without even the implied warranties of 
+#MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+#PURPOSE.  See the GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License along 
+#with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
 ###################### DO NOT TOUCH THIS (HEAD TO THE SECOND PART) ######################
@@ -83,12 +94,12 @@ class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
 DistUtilsExtra.auto.setup(
     name='wiitracker',
     version='0.1',
-    #license='GPL v3',
-    #author='Your Name',
-    #author_email='email@ubuntu.com',
-    #description='UI for managing …',
-    #long_description='Here a longer description',
-    #url='https://launchpad.net/wiitracker',
+    license='GPL-3',
+    author='Carlos M. Pérez Penichet',
+    author_email='cpp@complexperiments.net',
+    description='Wiitracker is an application that tracks the position of a Wii remote based on the accelerometer readings and draws it on the screen.',
+    long_description='Wiitracker is an application that tracks the position of a Wii remote based on the accelerometer readings and draws it on the screen.',
+    url='http://www.complexperiments.net/carlos/blog/',
     cmdclass={'install': InstallAndUpdateDataDirectory}
     )
 

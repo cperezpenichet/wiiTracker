@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Wiitracker
-Comment=Wiitracker application
+Name=wiitracker
+Comment=wiitracker application
 Categories=GNOME;Utility;
 Exec=wiitracker
-Icon=wiitracker
+Icon=/usr/share/wiitracker/media/icon.png
 Terminal=false
 Type=Application
